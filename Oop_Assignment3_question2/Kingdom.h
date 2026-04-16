@@ -21,6 +21,18 @@ protected:
 	int wealth;
 	float defenseStat;
 
+	LandedLord* currentLord;
+	LandlessLord** localCourtiers;
+
+	FootSoldier** soldier;
+	Knight** knight;
+	Cavalry** cavalry;
+	BatteringRam** bRam;
+	Catapult** catapult;
+	Warship** warship;
+	WarriorLord** warriorLord;
+
+	Sage** sage;
 
 private:
 
