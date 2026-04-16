@@ -22,6 +22,9 @@ protected:
 	float defenseStat;
 
 	LandedLord* currentLord;
+	int* heirIds;
+	int heirCount;
+
 	LandlessLord** localCourtiers;
 
 	FootSoldier** soldier;
