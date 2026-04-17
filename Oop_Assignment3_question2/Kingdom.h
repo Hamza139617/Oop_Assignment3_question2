@@ -1,5 +1,7 @@
 #pragma once
-
+#include <iostream>
+#include <fstream>
+using namespace std;
 // Forward Declarations
 
 class LandedLord;
@@ -229,7 +231,7 @@ private:
 	
 
 public:
-	Aethelgard();
+	Aethelgard(const char* filename);
 
 };
 
