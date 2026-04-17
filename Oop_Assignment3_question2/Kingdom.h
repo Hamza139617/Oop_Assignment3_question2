@@ -21,7 +21,11 @@ protected:
 	int wealth;
 	float defenseStat;
 
+
 	LandedLord* currentLord;
+	int* heirIds;
+	int heirCount;
+
 	LandlessLord** localCourtiers;
 
 	FootSoldier** soldier;
@@ -42,6 +46,7 @@ protected:
 	int catapultCount;
 	int warshipCount;
 	int warriorLordCount;
+	int sageCount;
 
 private:
 
