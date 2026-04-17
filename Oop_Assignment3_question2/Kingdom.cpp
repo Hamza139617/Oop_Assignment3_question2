@@ -1,5 +1,5 @@
 #include "Kingdom.h"
-
+#include "Entity.h"
 
 // helper functions
 
@@ -45,7 +45,7 @@ int strToInt(const char* s) {
 	}
 
 	while (s[i] != '\0') {
-		num - num * 10 + (s[i] - '0');
+		num = num * 10 + (s[i] - '0');
 		i++;
 	}
 
@@ -153,8 +153,64 @@ TheVoidRift::TheVoidRift(int realmId, int wealth, int defenseStat, int baseTaxIn
 
 Aethelgard::Aethelgard(const char* filename) {
 
+	landedLordMax = 10;
+	lordMax = 20;
+	warriorMax = 20;
+
+	soldierMax = 10;
+	knightMax = 10;
+	cavalryMax = 10;
+
+	int soldierCurrent = 0;
+	int knightCurrent = 0;
+	int cavalryCurrent = 0;
+
+	int landedLordCurrent = 0;
+	int lordCurrent = 0;
+	int warriorCurrent = 0;
+
+	Lord = new LandedLord * [landedLordMax];
+	localCourtiers = new LandlessLord * [lordMax];
+	warriorLord = new WarriorLord * [warriorMax];
+
+	soldier = new FootSoldier * [soldierMax];
+	knight = new Knight * [knightMax];
+	cavalry = new Cavalry * [cavalryMax];
+
+
+	
+
+
+	for (int i = 0; i < landedLordMax; i++) {
+		Lord[i] = nullptr;
+	}
+
+	for (int i = 0; i < lordMax; i++) {
+		localCourtiers[i] = nullptr;
+	}
+
+	for (int i = 0; i < warriorMax; i++) {
+		warriorLord[i] = nullptr;
+	}
+
+	for (int i = 0; i < soldierMax; i++) {
+		soldier[i] = nullptr;
+	}
+
+	for (int i = 0; i < knightMax; i++) {
+		knight[i] = nullptr;
+	}
+
+	for (int i = 0; i < cavalryMax; i++) {
+		cavalry[i] = nullptr;
+	}
+
 	realmsMax = 10;
 	realms = new Kingdom * [realmsMax];
+	Relations = new int* [realmsMax];
+
+	for (int i = 0; i < realmsMax; i++)
+		Relations[i] = new int[realmsMax];
 
 	for (int i = 0; i < realmsMax; i++)
 		realms[i] = nullptr;
@@ -209,6 +265,8 @@ Aethelgard::Aethelgard(const char* filename) {
 			if (line[0] == 'R') continue;
 			int i = 0;
 
+			// the getToken function is basically for getting a specic part of the whole line 
+
 			int id = strToInt(getToken(line, i));
 
 			char name[100];
@@ -252,13 +310,100 @@ Aethelgard::Aethelgard(const char* filename) {
 		else if (section == 2) {
 			// realtions section
 
+			int number;
+			static int realmId = 0;
+
+			for (int i = 0; i < 10; i++) {
+
+				for (int j = 0; j < 10; j++) {
+					number = strToInt(getToken(line, j));
+					Relations[i][j] = number;
+				}
+
+			}
+
 
 		}
 		else if (section == 3) {
 			// lords section
+	
+			if (line[0] == 'L') continue;
+			int i = 0;
+
+			int lordId = strToInt(getToken(line, i));
+
+			char name[100];
+
+			copyStr(name, getToken(line, i));
+
+			int age = strToInt(getToken(line, i));
+
+			char gender[5];
+
+			copyStr(gender, getToken(line, i));
+
+			char clas[100];
+
+			copyStr(clas, getToken(line, i));
+
+			int rId = strToInt(getToken(line, i));
+			int sStat = strToInt(getToken(line, i));
+			int aStat = strToInt(getToken(line, i));
+			int dstat = strToInt(getToken(line, i));
+			int fId = strToInt(getToken(line, i));
+
+			if (strEqual(clas, "LandedLord")) {
+
+				// work on the clamp part latter
+				Lord[landedLordCurrent] = new LandedLord(lordId, name, age, rId, aStat, dstat, fId, sStat );
+				landedLordCurrent++;
+			}
+			else if (strEqual(clas, "LandlessLord")) {
+
+				// work on the clamp part latter
+				localCourtiers[lordCurrent] = new LandlessLord(lordId, name, age, rId, aStat, dstat, fId);
+				lordCurrent++;
+
+			}
+			else if (strEqual(clas, "WarriorLord")) {
+
+				// work on the clamp part latter
+				warriorLord[warriorCurrent] = new WarriorLord(lordId, name, age, rId, aStat, dstat, fId, sStat, true);
+				warriorCurrent++;
+			}
+
+
 		}
 		else if (section == 4) {
-			// footsoldier section
+			// millitary section
+
+			int i = 0;
+
+			if (line[0] == 'R') continue;
+			
+
+			int id = strToInt(getToken(line, i));
+			char clas[100];
+			copyStr(clas, getToken(line, i));
+			int count = strToInt(getToken(line, i));
+			int bAtt = strToInt(getToken(line, i));
+			int bHp = strToInt(getToken(line, i));
+			int bSd = strToInt(getToken(line, i));
+			int Atarget = strToInt(getToken(line, i));
+
+			if (strEqual(clas, "Knight")) {
+				
+
+			}
+			else if (strEqual(clas, "FootSoldier")) {
+
+			}
+			else if (strEqual(clas, "Cavalry")) {
+
+			}
+
+
+
 		}
 		else if (section == 5) {
 			// seges section

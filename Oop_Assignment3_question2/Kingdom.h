@@ -230,8 +230,39 @@ private:
 	int realmsMax;
 	
 
+	int** Relations;
+
+	LandedLord** Lord;
+	
+	LandlessLord** localCourtiers;
+
+	FootSoldier** soldier;
+	Knight** knight;
+	Cavalry** cavalry;
+	BatteringRam** bRam;
+	Catapult** catapult;
+	Warship** warship;
+	WarriorLord** warriorLord;
+
+	Sage** sage;
+
+	int landedLordMax;
+	int lordMax;
+	int soldierMax;
+	int knightMax;
+	int cavalryMax;
+	int bRamMax;
+	int catapultMax;
+	int shipMax;
+	int warriorMax;
+	int sageMax;
+
+
 public:
 	Aethelgard(const char* filename);
+
+
+
 
 };
 
