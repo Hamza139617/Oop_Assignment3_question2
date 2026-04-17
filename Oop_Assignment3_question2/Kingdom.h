@@ -18,9 +18,12 @@ class Sage;
 class Kingdom {
 	
 protected:
+	int realmId;
 	int wealth;
-	float defenseStat;
-
+	int defenseStat;
+	int baseTaxIncome;
+	const char* name;
+	const char* terrain;
 
 	LandedLord* currentLord;
 	int* heirIds;
@@ -38,13 +41,23 @@ protected:
 
 	Sage** sage;
 
+	int lordMax;
+	int soldierMax;
+	int knightMax;
+	int cavalryMax;
+	int bRamMax;
+	int catapultMax;
+	int shipMax;
+	int warriorMax;
+	int sageMax;
+
 	int lordCount;
 	int soldierCount;
 	int knightCount;
 	int cavalryCount;
 	int bRamCount;
 	int catapultCount;
-	int warshipCount;
+	int shipCount;
 	int warriorLordCount;
 	int sageCount;
 
@@ -52,8 +65,8 @@ private:
 
 
 public:
-	Kingdom();
-	Kingdom(int, float, LandedLord, LandlessLord*, FootSoldier*, Knight*, Cavalry*, BatteringRam*, Catapult*, Warship*, WarriorLord*, Sage*);
+	
+	Kingdom(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain );
 
 	void performAction(); // for collecting the tax and aging the subjects
 
@@ -65,9 +78,8 @@ private:
 	int coldAttritionModifier; // default value 5 
 
 public:
-	FrostPeaksKingdom();
-
-	FrostPeaksKingdom(int, float, LandedLord, LandlessLord*, FootSoldier*, Knight*, Cavalry*, BatteringRam*, Catapult*, Warship*, WarriorLord*, Sage*);
+	
+	FrostPeaksKingdom(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain);
 
 	void applyColdWeather();
 
@@ -80,9 +92,7 @@ private:
 
 public:
 
-	ThePeaksOfFrost();
-
-	ThePeaksOfFrost(int, float, LandedLord, LandlessLord*, FootSoldier*, Knight*, Cavalry*, BatteringRam*, Catapult*, Warship*, WarriorLord*, Sage*);
+	ThePeaksOfFrost(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain);
 
 };
 
@@ -93,9 +103,7 @@ private:
 
 public:
 
-	VerdantKingdom();
-
-	VerdantKingdom(int, float, LandedLord, LandlessLord*, FootSoldier*, Knight*, Cavalry*, BatteringRam*, Catapult*, Warship*, WarriorLord*, Sage*);
+	VerdantKingdom(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain);
 
 	void applyFoodBonus();
 
@@ -107,9 +115,9 @@ private:
 
 public:
 
-	TheSkyCitadel();
+	
 
-	TheSkyCitadel(int, float, LandedLord, LandlessLord*, FootSoldier*, Knight*, Cavalry*, BatteringRam*, Catapult*, Warship*, WarriorLord*, Sage*);
+	TheSkyCitadel(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain);
 
 };
 
@@ -119,9 +127,8 @@ class TheVerdantExpanse : public VerdantKingdom {
 private:
 
 public:
-	TheVerdantExpanse();
 
-	TheVerdantExpanse(int, float, LandedLord, LandlessLord*, FootSoldier*, Knight*, Cavalry*, BatteringRam*, Catapult*, Warship*, WarriorLord*, Sage*);
+	TheVerdantExpanse(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain);
 
 
 };
@@ -131,10 +138,7 @@ class TheCrimsonSands : public VerdantKingdom {
 private:
 
 public:
-
-	TheCrimsonSands();
-
-	TheCrimsonSands(int, float, LandedLord, LandlessLord*, FootSoldier*, Knight*, Cavalry*, BatteringRam*, Catapult*, Warship*, WarriorLord*, Sage*);
+	TheCrimsonSands(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain);
 
 
 };
@@ -144,9 +148,8 @@ class TheAzureRiverlands : public VerdantKingdom {
 private:
 
 public:
-	TheAzureRiverlands();
-
-	TheAzureRiverlands(int, float, LandedLord, LandlessLord*, FootSoldier*, Knight*, Cavalry*, BatteringRam*, Catapult*, Warship*, WarriorLord*, Sage*);
+	
+	TheAzureRiverlands(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain);
 
 };
 
@@ -156,9 +159,7 @@ private:
 	int navalTradeBonus;
 public:
 
-	CoastalKingdom();
-
-	CoastalKingdom(int, float, LandedLord, LandlessLord*, FootSoldier*, Knight*, Cavalry*, BatteringRam*, Catapult*, Warship*, WarriorLord*, Sage*);
+	CoastalKingdom(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain);
 
 	void applyTradeBonus();
 
@@ -169,10 +170,8 @@ class TheSunlandEmpire : public CoastalKingdom {
 private:
 
 public:
-	
-	TheSunlandEmpire();
 
-	TheSunlandEmpire(int, float, LandedLord, LandlessLord*, FootSoldier*, Knight*, Cavalry*, BatteringRam*, Catapult*, Warship*, WarriorLord*, Sage*);
+	TheSunlandEmpire(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain);
 
 };
 
@@ -184,9 +183,7 @@ private:
 
 public:
 
-	TheCorsairIsles();
-
-	TheCorsairIsles(int, float, LandedLord, LandlessLord*, FootSoldier*, Knight*, Cavalry*, BatteringRam*, Catapult*, Warship*, WarriorLord*, Sage*);
+	TheCorsairIsles(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain);
 
 };
 
@@ -196,9 +193,7 @@ private:
 
 public:
 
-	TheTempestCoast();
-
-	TheTempestCoast(int, float, LandedLord, LandlessLord*, FootSoldier*, Knight*, Cavalry*, BatteringRam*, Catapult*, Warship*, WarriorLord*, Sage*);
+	TheTempestCoast(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain);
 
 
 };
@@ -209,11 +204,32 @@ class TheImperialSeat : public CoastalKingdom {
 private:
 
 public:
-	TheImperialSeat();
 
-	TheImperialSeat(int, float, LandedLord, LandlessLord*, FootSoldier*, Knight*, Cavalry*, BatteringRam*, Catapult*, Warship*, WarriorLord*, Sage*);
+	TheImperialSeat(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain);
 
 };
 
-// will be working on the unique realms later 
+class TheVoidRift : public Kingdom {
+
+private:
+	int threatLevel;
+
+public:
+
+	TheVoidRift(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain);
+
+};
+
+class Aethelgard {
+	
+private:
+
+	Kingdom** realms;
+	int realmsMax;
+	
+
+public:
+	Aethelgard();
+
+};
 
