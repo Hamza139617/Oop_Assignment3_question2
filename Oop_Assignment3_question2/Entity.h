@@ -55,8 +55,9 @@ public:
 
 class FootSoldier :public MeleeUnit
 {
+	int footSoldierCount;
 public:
-	FootSoldier(int id, const char* n, int hp, int ar, float mC, int aP);
+	FootSoldier(int count, int id, const char* n, int hp, int ar, float mC, int aP);
 };
 
 class Knight :public MeleeUnit
@@ -84,7 +85,7 @@ public:
 	Cavalry(int id, const char* n, int hp, int ar, float mC, int aP, float cM, float tP);
 };
 
-class  SiegeEngine :public Asset
+class SiegeEngine :public Asset
 {
 protected:
 	int siegeDamage;

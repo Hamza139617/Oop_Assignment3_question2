@@ -29,9 +29,9 @@ MeleeUnit::MeleeUnit(int id, const char* name, int hp, int armor, float maintena
 	this->isFrontLine = isFrontLine;
 }
 
-FootSoldier::FootSoldier(int id, const char* n, int hp, int ar, float mC, int aP) :MeleeUnit(id, n, hp, ar, mC, aP, true)
+FootSoldier::FootSoldier(int count, int id, const char* n, int hp, int ar, float mC, int aP) :MeleeUnit(id, n, hp, ar, mC, aP, true)
 {
-
+	footSoldierCount = count;
 }
 
 Knight::Knight(int id, const char* n, int hp, int ar, float mC, int aP, bool sB) :MeleeUnit(id, n, hp, ar, mC, aP, true)
