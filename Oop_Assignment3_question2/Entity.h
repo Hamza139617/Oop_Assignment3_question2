@@ -2,36 +2,48 @@
 
 class Entity
 {
-public:
+protected:
 	int id;
-	char* name;
+	const char* name;
+public:
 	Entity(int id, const char* name);
-	~Entity();
+	//getters
+	int getId()const { return id; }
+	const char* getName()const { return name; }
 };
 
 class Person :public Entity
 {
-public:
+protected:
 	int age;
+public:
 	bool isAlive;
 	Person(int id, const char* name, int age);
+	int getAge()const { return age; }
 };
 
 class Asset :public Entity
 {
-public:
+protected:
 	int hp;
 	int maxHp;
 	int armor;
 	float maintenanceCost;
+public:
 	Asset(int id, const char* name, int hp, int armor, float maintenanceCost);
+	int getHp()const { return hp; }
+	int getMaxHp()const { return maxHp; }
+	int getArmor()const { return armor; }
+	int getMaintenanceCost()const { return maintenanceCost; }
 };
 
 class MilitaryUnit :public Asset
 {
-public:
+protected:
 	int attackPower;
+public:
 	MilitaryUnit(int id, const char* name, int hp, int armor, float maintenanceCost, int attackPower);
+	int getAttackPower()const { return attackPower; }
 };
 
 class MeleeUnit :public MilitaryUnit
@@ -49,6 +61,7 @@ public:
 
 class Knight :public MeleeUnit
 {
+protected:
 public:
 	bool shieldBlock;
 	Knight(int id, const char* n, int hp, int ar, float mC, int aP, bool sB);
@@ -56,10 +69,13 @@ public:
 
 class MountedUnit :public MilitaryUnit
 {
-public:
+protected:
 	float chargeMultiplier;
 	float terrainPenalty;
+public:
 	MountedUnit(int id, const char* n, int hp, int ar, float mC, int aP, float cM, float tP);
+	float getChargeMultiplier()const { return chargeMultiplier; }
+	float getTerrainPenalty()const { return terrainPenalty; }
 };
 
 class Cavalry :public MountedUnit
@@ -70,10 +86,13 @@ public:
 
 class  SiegeEngine :public Asset
 {
-public:
+protected:
 	int siegeDamage;
 	int speed;
+public:
 	SiegeEngine(int id, const char* n, int hp, int ar, float mC, int sd, int s);
+	int getSiegeDamage()const { return siegeDamage; }
+	int getSpeed()const { return speed; }
 };
 
 class BatteringRam :public SiegeEngine
@@ -84,23 +103,29 @@ public:
 
 class Catapult :public SiegeEngine
 {
-public:
+protected:
 	int aoeDamage;
 	int aoeTargets;
+public:
 	Catapult(int id, const char* n, int hp, int armor, float mc, int sd, int s, int aoed, int aoet);
+	int getAoeDamage()const { return aoeDamage; }
+	int getAoeTargets()const { return aoeTargets; }
 };
 
 class Transport :public Asset
 {
-public:
+protected:
 	int troopCapacity;
 	float knotsSpeed;
+public:
 	Transport(int id, const char* n, int hp, int ar, float mc, int tCap, float knotS);
+	int getTroopCapacity()const { return troopCapacity; }
+	float getKnotsSpeed()const { return knotsSpeed; }
 };
 
 class Noble :public Person
 {
-public:
+protected:
 	int realmIdx;
 	int ambitionStat;
 	int diplomacyStat;
@@ -108,46 +133,66 @@ public:
 	int fatherId;
 	int* childrenIds;
 	int childCount;
+public:
 	Noble(int id, const char* name, int age, int reIdx, int amStat, int dipStat, int faId);
-	~Noble();
+	int getRealmIdx()const { return realmIdx; }
+	int getAmbitionStat()const { return ambitionStat; }
+	int getDiplomacyStat()const { return diplomacyStat; }
+	float getHealthMeter()const { return healthMeter; }
+	int getFatherId()const { return fatherId; }
+	int* getChildrenIds()const { return childrenIds; }
+	int getChildCount()const { return childCount; }
 };
 
 class LandedLord :public Noble
 {
-public:
+protected:
 	int strategyStat;
+public:
 	LandedLord(int id, const char* name, int age, int reIdx, int amStat, int dipStat, int faId, int stratStat);
-
+	int getStrategyStat()const { return strategyStat; }
 };
 
 class LandlessLord :public Noble
 {
-public:
+protected:
 	float assassinationPlotProgress;
+public:
 	LandlessLord(int id, const char* name, int age, int realmIndx, int ambS, int dipS, int faId);
+	float getAssassinationPlotProgress()const {
+		return assassinationPlotProgress;
+	}
 };
 
 class Sage :public Person
 {
-public:
+protected:
 	int healingPower;
 	int wisdom;
+public:
 	Sage(int id, const char* name, int age, int healP, int wise);
+	int getHealingPower()const { return healingPower; }
+	int getWisodm()const { return wisdom; }
 };
 
 class Assassin :public Person
 {
-public:
+protected:
 	int stealthStat;
 	int clientIdx;
+public:
 	Assassin(int id, const char* name, int age, int stealthS, int clientIndx);
+	int getStealthStat()const { return stealthStat; }
+	int getClientIdx()const { return clientIdx; }
 };
 
 class WarriorLord :public Noble, public Knight
 {
+protected:
 	int strategyStat;
 public:
 	WarriorLord(int id, const char* name, int age, int realmIndx, int ambS, int dipS, int faId, int stratStat, bool shieldB);
+	int getStrategyStat()const { return strategyStat; }
 };
 
 class WarShip :public Transport, public SiegeEngine

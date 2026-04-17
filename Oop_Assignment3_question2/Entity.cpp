@@ -1,21 +1,8 @@
 #include"Entity.h"
 
-Entity::Entity(int id, const char* name)
+Entity::Entity(int id, const char* name):name(name)
 {
 	this->id = id;
-	int len = 0;
-	while (name[len] != '\0') len++;
-	this->name = new char[len + 1];
-
-	for (int i = 0; i <= len; i++)
-	{
-		this->name[i] = name[i];
-	}
-}
-
-Entity::~Entity()
-{
-	delete[] name;
 }
 
 Person::Person(int id, const char* name, int age) :Entity(id, name)
@@ -95,11 +82,6 @@ Noble::Noble(int id, const char* name, int age, int reIdx, int amStat, int dipSt
 	healthMeter = 0.0f;
 	childrenIds = nullptr;
 	childCount = 0;
-}
-
-Noble::~Noble()
-{
-	delete[] childrenIds;
 }
 
 LandedLord::LandedLord(int id, const char* name, int age, int reIdx, int amStat, int dipStat, int faId, int stratStat) : Noble(id, name, age, reIdx, amStat, dipStat, faId)
