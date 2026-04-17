@@ -18,7 +18,7 @@ class Sage;
 
 
 class Kingdom {
-	
+
 protected:
 	int realmId;
 	int wealth;
@@ -67,8 +67,68 @@ private:
 
 
 public:
-	
-	Kingdom(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain );
+
+	int& getLordCount() {
+		return lordCount;
+	}
+
+	int& getSoldierCount() {
+		return soldierCount;
+	}
+
+	int& getKnightCount() {
+		return knightCount;
+	}
+
+	int& getCavalryCount() {
+		return cavalryCount;
+	}
+
+	int& getBramCount() { return bRamCount; }
+	int& getCatapultCount() { return catapultCount; }
+	int& getShipCount() { return shipCount; }
+	int& getWarriorLordCount() { return warriorLordCount; }
+	int& getSageCount() { return sageCount; }
+
+	Kingdom(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain);
+
+	LandedLord*& getCurrentLord() {
+		return currentLord;
+	}
+
+	LandlessLord**& getLocalLord() {
+		return localCourtiers;
+	}
+
+	WarriorLord**& getWarrior() {
+		return warriorLord;
+	}
+
+	FootSoldier**& getFootsoldier() {
+		return soldier;
+	}
+
+	Knight**& getKnight() {
+		return knight;
+	}
+
+	Cavalry**& getCavalry() {
+		return cavalry;
+	}
+
+	Sage**& getSage() {
+		return sage;
+	}
+
+	void addLord(LandedLord* l);
+
+	void addlocalLord(LandlessLord* l);
+	void addKnight(Knight* k);
+	void addFootSoldier(FootSoldier* f);
+	void addSage(Sage* s);
+	void addCavalry(Cavalry* c);
+	void addWarrior(WarriorLord* w);
+
 
 	void performAction(); // for collecting the tax and aging the subjects
 
@@ -260,8 +320,6 @@ private:
 
 public:
 	Aethelgard(const char* filename);
-
-
 
 
 };

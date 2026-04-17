@@ -120,7 +120,56 @@ Kingdom::Kingdom(int realmId, int wealth, int defenseStat, int baseTaxInocome, c
 
 }
 
+void Kingdom::addLord(LandedLord* l) {
 
+	if (!currentLord) return;
+
+	currentLord = l;
+	return;
+}
+
+void Kingdom::addlocalLord(LandlessLord* l) {
+
+	if (lordCount < lordMax) {
+
+		localCourtiers[lordCount] = l;
+		lordCount++;
+		return;
+
+	}
+}
+
+void Kingdom::addKnight(Knight* k) {
+	if (knightCount < knightMax) {
+
+		knight[knightCount++] = k;
+		return;
+
+	}
+}
+
+void Kingdom::addCavalry(Cavalry* c) {
+	if (cavalryCount < cavalryMax) {
+		cavalry[cavalryCount++] = c;
+		return;
+	}
+}
+
+void Kingdom::addFootSoldier(FootSoldier* f) {
+
+	if (soldierCount < soldierMax) {
+		soldier[soldierCount++] = f;
+		return;
+	}
+
+}
+
+void Kingdom::addSage(Sage* s) {
+	if (sageCount < sageMax) {
+		sage[sageCount++] = s;
+		return;
+	}
+}
 
 FrostPeaksKingdom::FrostPeaksKingdom(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain) : Kingdom( realmId, wealth, defenseStat, baseTaxInocome, nameOne, terrain) {
 	coldAttritionModifier = 5;
@@ -153,14 +202,18 @@ TheVoidRift::TheVoidRift(int realmId, int wealth, int defenseStat, int baseTaxIn
 
 Aethelgard::Aethelgard(const char* filename) {
 
+	realmsMax = 10;
+
 	landedLordMax = 10;
 	lordMax = 20;
 	warriorMax = 20;
 
-	soldierMax = 10;
-	knightMax = 10;
-	cavalryMax = 10;
+	soldierMax = 9;
+	knightMax = 9;
+	cavalryMax = 9;
+	sageMax = 9;
 
+	int sageCurrent = 0;
 	int soldierCurrent = 0;
 	int knightCurrent = 0;
 	int cavalryCurrent = 0;
@@ -177,7 +230,7 @@ Aethelgard::Aethelgard(const char* filename) {
 	knight = new Knight * [knightMax];
 	cavalry = new Cavalry * [cavalryMax];
 
-
+	sage = new Sage * [sageMax];
 	
 
 
@@ -205,7 +258,11 @@ Aethelgard::Aethelgard(const char* filename) {
 		cavalry[i] = nullptr;
 	}
 
-	realmsMax = 10;
+	for (int i = 0; i < sageMax; i++) {
+		sage[i] = nullptr;
+	}
+
+
 	realms = new Kingdom * [realmsMax];
 	Relations = new int* [realmsMax];
 
@@ -354,21 +411,30 @@ Aethelgard::Aethelgard(const char* filename) {
 
 			if (strEqual(clas, "LandedLord")) {
 
-				// work on the clamp part latter
+				
 				Lord[landedLordCurrent] = new LandedLord(lordId, name, age, rId, aStat, dstat, fId, sStat );
+
+				realms[rId]->addLord(Lord[landedLordCurrent]);
 				landedLordCurrent++;
+
 			}
 			else if (strEqual(clas, "LandlessLord")) {
 
 				// work on the clamp part latter
 				localCourtiers[lordCurrent] = new LandlessLord(lordId, name, age, rId, aStat, dstat, fId);
+				
+				realms[rId]->addlocalLord(localCourtiers[lordCurrent]);
 				lordCurrent++;
+				
 
 			}
 			else if (strEqual(clas, "WarriorLord")) {
 
 				// work on the clamp part latter
 				warriorLord[warriorCurrent] = new WarriorLord(lordId, name, age, rId, aStat, dstat, fId, sStat, true);
+				
+				realms[rId]->addWarrior(warriorLord[warriorCurrent]);
+
 				warriorCurrent++;
 			}
 
@@ -393,12 +459,22 @@ Aethelgard::Aethelgard(const char* filename) {
 
 			if (strEqual(clas, "Knight")) {
 				
+				knight[knightCurrent] = new Knight(count, knightCurrent, "Unknown", bHp, 20, 20.0, bAtt, true);
+
+				realms[id]->addKnight(knight[knightCurrent++]);
 
 			}
 			else if (strEqual(clas, "FootSoldier")) {
 
+				soldier[soldierCurrent] = new FootSoldier(count, soldierCurrent, "Unknown", bHp, 20, 20.0, bAtt);
+
+				realms[id]->addFootSoldier(soldier[soldierCurrent++]);
+
 			}
 			else if (strEqual(clas, "Cavalry")) {
+
+				cavalry[cavalryCurrent] = new Cavalry(count,cavalryCurrent, "Unkwown", bHp, 20, 20.0, bAtt, 20.0, 20.0);
+				realms[id]->addCavalry(cavalry[cavalryCurrent]);
 
 			}
 
@@ -407,12 +483,41 @@ Aethelgard::Aethelgard(const char* filename) {
 		}
 		else if (section == 5) {
 			// seges section
+
+			int i = 0;
+
+			if (line[0] == 'R') continue;
+
+			int rId = strToInt(getToken(line, i));
+			char name[100];
+
+			copyStr(name, getToken(line, i));
+			int healP = strToInt(getToken(line, i));
+			int wisd = strToInt(getToken(line, i));
+
+
 		}
 		else if (section == 6) {
 			// assassins section
+
+			int i = 0;
+
+			if (line[i] == 'A') continue;
+
+			int aId = strToInt(getToken(line, i));
+
+			char name[100];
+			strcpy(name, getToken(line, i));
+
+			int age = strToInt(getToken(line, i));
+
+			int sStat = strToInt(getToken(line, i));
+			int cRealm = strToInt(getToken(line, i));
 		}
 		else if (section == 7) {
 			// config section
+
+
 		}
 
 	}
