@@ -41,8 +41,9 @@ class MilitaryUnit :public Asset
 {
 protected:
 	int attackPower;
+	int soldierCount;
 public:
-	MilitaryUnit(int id, const char* name, int hp, int armor, float maintenanceCost, int attackPower);
+	MilitaryUnit(int count, int id, const char* name, int hp, int armor, float maintenanceCost, int attackPower);
 	int getAttackPower()const { return attackPower; }
 };
 
@@ -55,9 +56,8 @@ public:
 
 class FootSoldier :public MeleeUnit
 {
-	int footSoldierCount;
 public:
-	FootSoldier(int count, int id, const char* n, int hp, int ar, float mC, int aP);
+	FootSoldier(int id, const char* n, int hp, int ar, float mC, int aP);
 };
 
 class Knight :public MeleeUnit

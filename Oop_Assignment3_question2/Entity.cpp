@@ -29,9 +29,8 @@ MeleeUnit::MeleeUnit(int id, const char* name, int hp, int armor, float maintena
 	this->isFrontLine = isFrontLine;
 }
 
-FootSoldier::FootSoldier(int count, int id, const char* n, int hp, int ar, float mC, int aP) :MeleeUnit(id, n, hp, ar, mC, aP, true)
+FootSoldier::FootSoldier(int id, const char* n, int hp, int ar, float mC, int aP) :MeleeUnit(id, n, hp, ar, mC, aP, true)
 {
-	footSoldierCount = count;
 }
 
 Knight::Knight(int id, const char* n, int hp, int ar, float mC, int aP, bool sB) :MeleeUnit(id, n, hp, ar, mC, aP, true)
@@ -39,8 +38,9 @@ Knight::Knight(int id, const char* n, int hp, int ar, float mC, int aP, bool sB)
 	shieldBlock = sB;
 }
 
-MountedUnit::MountedUnit(int id, const char* n, int hp, int ar, float mC, int aP, float cM, float tP) :MilitaryUnit(id, n, hp, ar, mC, aP)
+MountedUnit::MountedUnit(int count, int id, const char* n, int hp, int ar, float mC, int aP, float cM, float tP) :MilitaryUnit(id, n, hp, ar, mC, aP)
 {
+	soldierCount = count;
 	chargeMultiplier = cM;
 	terrainPenalty = tP;
 }
