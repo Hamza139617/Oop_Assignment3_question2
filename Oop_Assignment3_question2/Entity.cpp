@@ -19,8 +19,9 @@ Asset::Asset(int id, const char* name, int hp, int armor, float maintenanceCost)
 	this->maxHp = hp;
 }
 
-MilitaryUnit::MilitaryUnit(int id, const char* name, int hp, int armor, float maintenanceCost, int attackPower) :Asset(id, name, hp, armor, maintenanceCost)
+MilitaryUnit::MilitaryUnit(int count, int id, const char* name, int hp, int armor, float maintenanceCost, int attackPower) :Asset(id, name, hp, armor, maintenanceCost)
 {
+	soldierCount = count;
 	this->attackPower = attackPower;
 }
 
@@ -38,9 +39,8 @@ Knight::Knight(int id, const char* n, int hp, int ar, float mC, int aP, bool sB)
 	shieldBlock = sB;
 }
 
-MountedUnit::MountedUnit(int count, int id, const char* n, int hp, int ar, float mC, int aP, float cM, float tP) :MilitaryUnit(id, n, hp, ar, mC, aP)
+MountedUnit::MountedUnit(int id, const char* n, int hp, int ar, float mC, int aP, float cM, float tP) :MilitaryUnit(id, n, hp, ar, mC, aP)
 {
-	soldierCount = count;
 	chargeMultiplier = cM;
 	terrainPenalty = tP;
 }
