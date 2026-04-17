@@ -25,27 +25,27 @@ MilitaryUnit::MilitaryUnit(int count, int id, const char* name, int hp, int armo
 	this->attackPower = attackPower;
 }
 
-MeleeUnit::MeleeUnit(int id, const char* name, int hp, int armor, float maintenanceCost, int attackPower, bool isFrontLine) :MilitaryUnit(id, name, hp, armor, maintenanceCost, attackPower)
+MeleeUnit::MeleeUnit(int count, int id, const char* name, int hp, int armor, float maintenanceCost, int attackPower, bool isFrontLine) :MilitaryUnit(count, id, name, hp, armor, maintenanceCost, attackPower)
 {
 	this->isFrontLine = isFrontLine;
 }
 
-FootSoldier::FootSoldier(int id, const char* n, int hp, int ar, float mC, int aP) :MeleeUnit(id, n, hp, ar, mC, aP, true)
+FootSoldier::FootSoldier(int count, int id, const char* n, int hp, int ar, float mC, int aP) :MeleeUnit(count,id, n, hp, ar, mC, aP, true)
 {
 }
 
-Knight::Knight(int id, const char* n, int hp, int ar, float mC, int aP, bool sB) :MeleeUnit(id, n, hp, ar, mC, aP, true)
+Knight::Knight(int count, int id, const char* n, int hp, int ar, float mC, int aP, bool sB) :MeleeUnit(count,id, n, hp, ar, mC, aP, true)
 {
 	shieldBlock = sB;
 }
 
-MountedUnit::MountedUnit(int id, const char* n, int hp, int ar, float mC, int aP, float cM, float tP) :MilitaryUnit(id, n, hp, ar, mC, aP)
+MountedUnit::MountedUnit(int count, int id, const char* n, int hp, int ar, float mC, int aP, float cM, float tP) :MilitaryUnit(count,id, n, hp, ar, mC, aP)
 {
 	chargeMultiplier = cM;
 	terrainPenalty = tP;
 }
 
-Cavalry::Cavalry(int id, const char* n, int hp, int ar, float mC, int aP, float cM, float tP) :MountedUnit(id, n, hp, ar, mC, aP, cM, tP)
+Cavalry::Cavalry(int count, int id, const char* n, int hp, int ar, float mC, int aP, float cM, float tP) :MountedUnit(count,id, n, hp, ar, mC, aP, cM, tP)
 {
 
 }

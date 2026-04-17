@@ -51,13 +51,13 @@ class MeleeUnit :public MilitaryUnit
 {
 public:
 	bool isFrontLine;
-	MeleeUnit(int id, const char* name, int hp, int armor, float maintenanceCost, int attackPower, bool isFrontLine);
+	MeleeUnit(int count, int id, const char* name, int hp, int armor, float maintenanceCost, int attackPower, bool isFrontLine);
 };
 
 class FootSoldier :public MeleeUnit
 {
 public:
-	FootSoldier(int id, const char* n, int hp, int ar, float mC, int aP);
+	FootSoldier(int count,int id, const char* n, int hp, int ar, float mC, int aP);
 };
 
 class Knight :public MeleeUnit
@@ -65,7 +65,7 @@ class Knight :public MeleeUnit
 protected:
 public:
 	bool shieldBlock;
-	Knight(int id, const char* n, int hp, int ar, float mC, int aP, bool sB);
+	Knight(int count,int id, const char* n, int hp, int ar, float mC, int aP, bool sB);
 };
 
 class MountedUnit :public MilitaryUnit
@@ -74,7 +74,7 @@ protected:
 	float chargeMultiplier;
 	float terrainPenalty;
 public:
-	MountedUnit(int id, const char* n, int hp, int ar, float mC, int aP, float cM, float tP);
+	MountedUnit(int count,int id, const char* n, int hp, int ar, float mC, int aP, float cM, float tP);
 	float getChargeMultiplier()const { return chargeMultiplier; }
 	float getTerrainPenalty()const { return terrainPenalty; }
 };
@@ -82,7 +82,7 @@ public:
 class Cavalry :public MountedUnit
 {
 public:
-	Cavalry(int id, const char* n, int hp, int ar, float mC, int aP, float cM, float tP);
+	Cavalry(int count, int id, const char* n, int hp, int ar, float mC, int aP, float cM, float tP);
 };
 
 class SiegeEngine :public Asset
