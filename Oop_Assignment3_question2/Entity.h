@@ -33,6 +33,7 @@ protected:
 public:
 	Asset(int id, const char* name, int hp, int armor, float maintenanceCost);
 	int getHp()const { return hp; }
+	void setHp(int h) { hp = h; }
 	int getMaxHp()const { return maxHp; }
 	int getArmor()const { return armor; }
 	int getMaintenanceCost()const { return maintenanceCost; }
@@ -145,6 +146,7 @@ public:
 	int getAmbitionStat()const { return ambitionStat; }
 	int getDiplomacyStat()const { return diplomacyStat; }
 	float getHealthMeter()const { return healthMeter; }
+	void setHealthMeter(float f) { healthMeter = f; }
 	int getFatherId()const { return fatherId; }
 	int* getChildrenIds()const { return childrenIds; }
 	int getChildCount()const { return childCount; }

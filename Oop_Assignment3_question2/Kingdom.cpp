@@ -11,6 +11,8 @@ int strLength(const char* s) {
 
 }
 
+
+
 bool strEqual(const char* a, const char* b) {
 
 	int i = 0;
@@ -147,6 +149,11 @@ void Kingdom::addlocalLord(LandlessLord* l) {
 	}
 }
 
+void Kingdom::performAction() {
+
+
+}
+
 void Kingdom::addKnight(Knight* k) {
 	if (knightCount < knightMax) {
 
@@ -193,9 +200,38 @@ FrostPeaksKingdom::FrostPeaksKingdom(int realmId, int wealth, int defenseStat, i
 	coldAttritionModifier = 5;
 }
 
+void FrostPeaksKingdom::applyColdWeather() {
+
+	for (int i = 0; i < this->getSoldierCount(); i++) {
+		FootSoldier* f = this->getFootsoldier()[i];
+		f->setHp(f->getHp() - 5);
+	}
+
+	for (int i = 0; i < this->getKnightCount(); i++) {
+		Knight* k = this->getKnight()[i];
+		k->setHp(k->getHp() - 5);
+	}
+
+	for (int i = 0; i < this->getCavalryCount(); i++) {
+		Cavalry* c = this->getCavalry()[i];
+		c->setHp(c->getHp() - 5);
+	}
+
+	performAction();
+
+}
+
 ThePeaksOfFrost::ThePeaksOfFrost(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain) : FrostPeaksKingdom( realmId, wealth, defenseStat, baseTaxInocome, nameOne, terrain) {}
 
-VerdantKingdom::VerdantKingdom(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain): Kingdom( realmId, wealth, defenseStat, baseTaxInocome, nameOne,  terrain)  {}
+VerdantKingdom::VerdantKingdom(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain): Kingdom( realmId, wealth, defenseStat, baseTaxInocome, nameOne,  terrain)  {
+	foodSurplusBonus = 5;
+}
+
+void VerdantKingdom::applyFoodBonus() {
+
+	this->wealth = this->wealth + foodSurplusBonus;
+	performAction();
+}
 
 TheSkyCitadel::TheSkyCitadel(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain) : VerdantKingdom( realmId, wealth, defenseStat, baseTaxInocome, nameOne,  terrain) {}
 
@@ -205,7 +241,17 @@ TheCrimsonSands::TheCrimsonSands(int realmId, int wealth, int defenseStat, int b
 
 TheAzureRiverlands::TheAzureRiverlands(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain): VerdantKingdom(realmId, wealth, defenseStat, baseTaxInocome, nameOne, terrain) {}
 
-CoastalKingdom::CoastalKingdom(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain): Kingdom(realmId, wealth, defenseStat, baseTaxInocome, nameOne, terrain) {}
+CoastalKingdom::CoastalKingdom(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain): Kingdom(realmId, wealth, defenseStat, baseTaxInocome, nameOne, terrain) {
+	navalTradeBonus = 2;
+}
+
+void CoastalKingdom::applyTradeBonus() {
+
+	wealth += baseTaxIncome * navalTradeBonus * shipCount / 100;
+
+	performAction();
+
+}
 
 TheSunlandEmpire::TheSunlandEmpire(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain): CoastalKingdom( realmId, wealth, defenseStat, baseTaxInocome, nameOne, terrain) {}
 

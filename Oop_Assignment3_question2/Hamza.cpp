@@ -10,13 +10,16 @@ void Aethelgard::economicDispatch() {
 		// calling the specific functions over here
 
 		if (realms[i]->getKingdomName() == "FrostPeaksKingdom") {
-			realms[i]->applyColdWeather();
+			FrostPeaksKingdom* realms2 = (FrostPeaksKingdom*)realms[i];
+			realms2->applyColdWeather();
 		}
 		else if (realms[i]->getKingdomName() == "VerdantKingdom") {
-			realms[i]->applyFoodBonus();
+			VerdantKingdom* realms2 = (VerdantKingdom*)realms[i];
+			realms2->applyFoodBonus();
 		}
 		else if (realms[i]->getKingdomName() == "CoastalKingdom") {
-			realms[i]->applyTradeBonus();
+			CoastalKingdom* realms2 = (CoastalKingdom*)realms[i];
+			realms2->applyTradeBonus();
 		}
 
 		// calling the common functions over here
@@ -48,7 +51,7 @@ void Aethelgard::aggingMortalityUpdates() {
 
 		LandedLord* l = realms[i]->getCurrentLord();
 
-		if (l->getAge() > 70) l->getHealthMeter(l->getHealthMeter() + 30.0);
+		if (l->getAge() > 70) l->setHealthMeter(l->getHealthMeter() + 30.0);
 
 		if (l->getAge() >= 100.0) l->kill();
 
