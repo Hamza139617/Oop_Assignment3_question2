@@ -376,9 +376,9 @@ public:
 	// hamza area
 
 
-
-
-
+	void  economicDispatch();
+	void aggingMortalityUpdates();
+	void geopolitcialDecay();
 
 
 
