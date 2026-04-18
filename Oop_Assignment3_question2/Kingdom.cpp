@@ -184,7 +184,6 @@ void Kingdom::addAssassin(Assassin* a) {
 	if (!assassin) return;
 
 	this->assassin = a;
-
 	return;
 
 }
@@ -277,7 +276,8 @@ Aethelgard::Aethelgard(const char* filename) {
 	cavalryMax = 9;
 	sageMax = 9;
 	assassinMax = 9;
-	
+	assassinCount = 0;
+
 
 	int sageCurrent = 0;
 	int soldierCurrent = 0;
@@ -686,10 +686,86 @@ float Aethelgard::kntDmg(Kingdom& kingdom, int snapKnight, int snapWarriorLord)
 	return total;
 
 }
-
+int Kingdom::getTotalMilitaryPower()const
+{
+	int power = 0;
+	power += soldierCount * 1;
+	power += cavalryCount * 5;
+	power += knightCount * 8;
+	power += shipCount * 12;
+	power += bRamCount * 25;
+	power += warriorLordCount * 10;
+	return power;
+}
 float Aethelgard::footDmg(int snapCount, int footAttackPower)
 {
 	return snapCount * footAttackPower;
+}
+
+void Aethelgard::printDashboard(int day)
+{
+
+	std::cout << "// ==== Chronometer ==== //\n Day: " << day << " | Invasion Progress: " << voidRift->getThreatLevel() << '/' << threatMax << std::endl << '\n';
+	std::cout << "\n\n// ==== Realm Ledger ==== //\n\n";
+	std::cout << "	| Realm Name | Wealth | Military Power | Current Lord | \n\n\n";
+	for (int v = 0; v < 10; v++)
+	{
+		std::cout<< " | " << realms[v]->getKingdomName() << " | " << realms[v]->getWealth() << " | " << realms[v]->getTotalMilitaryPower() << " | ";
+		if (realms[v]->getCurrentLord() != nullptr)
+			std::cout << realms[v]->getCurrentLord()->getName() << " |";
+		else
+			std::cout << "No Lord  |";
+		std::cout << std::endl;
+	}
+
+	std::cout << "\n// ==== Diplomatic Web ==== //\n" << std::endl;
+	for (int i = 0; i < 10; i++)
+		std::cout << "[" << i << "] ";
+	std::cout << std::endl; 
+	for (int i = 0; i < 10; i++)
+	{
+		std::cout << "[" << i << "]";
+		for (int j = 0; j < 10; j++)
+		{
+			std::cout << Relations[i][j] << " ";
+		}
+		std::cout << std::endl;
+	}
+	std::cout << "\n// ==== Whispering Council ==== //\n\n";
+	for (int i = 0; i < 10; i++)
+	{
+		LandlessLord** courtiers = realms[i]->getLocalLord();
+		int count = realms[i]->getLordCount();
+		for (int j = 0; j < count; j++)
+		{
+			if (courtiers[j]->getAssassinationPlotProgress() > 50.0f)
+			{
+				std::cout << "[PLOT WARNING] " << courtiers[j]->getName()
+					<< "  |  Realm: " << realms[i]->getKingdomName() << "  | Progress: " <<
+					courtiers[j]->getAssassinationPlotProgress() << "%\n";;
+			}
+		}
+	}
+
+
+	for (int i = 0; i < getAssassinCount(); i++)
+	{
+		int clientIdx = assassin[i]->getClientIdx();
+		int wRel = 0;
+		for (int j = 0; j < 10; j++)
+		{
+			if (j != clientIdx && Relations[clientIdx][j] < wRel)
+			{
+				wRel = Relations[clientIdx][j];
+			}
+		}
+		if (wRel <= -50)
+		{
+			std::cout << "[ACTIVE ASSASSIN] " << assassin[i]->getName() <<
+				" |  Client: " << realms[clientIdx]->getKingdomName() <<
+				std::endl;
+		}
+	}
 }
 
 void Aethelgard::oneHour(int& attackerC, int& attackerK, int& attackerF, int& attackerS, int& defenderC, int& defenderK, int& defenderF, int& defenderS, int atkCHp, int atkKHp, int atkFHp, int defCHp, int defKHp, int defFHp, Kingdom& attacker, Kingdom& defender, int atkStrat, int defStrat)
@@ -846,14 +922,6 @@ void Aethelgard::startWar(Kingdom& attacker, Kingdom& defender)
 
 		Relations[attacker.getRealmId()][defender.getRealmId()] = 0;
 		Relations[defender.getRealmId()][attacker.getRealmId()] = 0;
-
-		for (int k = 0; k < 10; k++)
-		{
-			if (k != attacker.getRealmId() && k != defender.getRealmId())
-			{
-				Relations[k][attacker.getRealmId()] -= 2;
-			}
-		}
 	}
 
 	attacker.updateCounts(numAtkC, numAtkK, numAtkF,numAtkS);
@@ -953,5 +1021,24 @@ void Aethelgard::startWarCaller()
 				}
 			}
 		}
+	}
+}
+
+void Aethelgard::economicDispatch()
+{
+
+}
+
+void Aethelgard::runSimulation()
+{
+	for (int day = 1; day <= threatMax; day++)
+	{
+		printDashboard(day);
+		economicDispatch();
+		aggingMortalityUpdates();
+		shadowTriggers();
+		geopolitcialDecay();
+		startWarCaller();
+		phaseVoidRift();
 	}
 }

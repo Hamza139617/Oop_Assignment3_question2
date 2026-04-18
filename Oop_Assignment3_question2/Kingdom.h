@@ -57,6 +57,7 @@ protected:
 	int warriorMax;
 	int sageMax;
 
+	int assassinCount;
 	int lordCount;
 	int soldierCount;
 	int knightCount;
@@ -74,6 +75,7 @@ public:
 
 	float getCivilWar() { return civilWarTension; }
 	void setCivilWarTension(float w) { civilWarTension = w; }
+	int getTotalMilitaryPower()const;
 
 	const char* getKingdomName() { return name; }
 
@@ -360,6 +362,7 @@ private:
 
 	Sage** sage;
 	Assassin** assassin;
+	int  assassinCount;
 
 	int landedLordMax;
 	int lordMax;
@@ -388,9 +391,10 @@ public:
 	void startWar(Kingdom& attacker, Kingdom& defender);
 	void phaseVoidRift();
 	// your area mr Usama 
-	
+	void printDashboard(int currentDay);
 
-
+	int getAssassinCount()const { return assassinCount; }
+	void runSimulation();
 
 
 
