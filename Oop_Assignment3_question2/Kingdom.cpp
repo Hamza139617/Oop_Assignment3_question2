@@ -812,6 +812,53 @@ void Aethelgard::startWar(Kingdom& attacker, Kingdom& defender)
 	attacker.updateCounts(numAtkC, numAtkK, numAtkF,numAtkS);
 	defender.updateCounts(numDefC, numDefK, numDefF,numDefS);
 }
+int TheVoidRift::getThreatLevel()const { return threatLevel; }
+void TheVoidRift::incrementThreat()
+{
+	threatLevel++;
+}
+void Kingdom::applyCasualties(float  value)
+{
+	soldierCount = (int)(soldierCount * value);
+	cavalryCount = (int)(cavalryCount * value);
+	knightCount = (int)(knightCount * value);
+	shipCount = (int)(shipCount * value);
+	bRamCount = (int)(bRamCount * value);
+	warriorLordCount = (int)(warriorLordCount * value);
+}
+
+void Aethelgard::phaseVoidRift()
+{
+	voidRift->incrementThreat();
+	if (voidRift->getThreatLevel() >= threatMax)
+	{
+		int globalPower = 0;
+		for (int q = 0; q < 10; q++)
+		{
+			globalPower += realms[q]->getSoldierCount() * 1 +
+				realms[q]->getCavalryCount() * 5 +
+				realms[q]->getKnightCount() * 8 +
+				realms[q]->getShipCount() * 12 +
+				realms[q]->getBramCount() * 25 +
+				realms[q]->getWarriorLordCount() * 10;
+		}
+		int abyssalForce = voidRift->getThreatLevel() * 100;
+		if (globalPower >= abyssalForce)
+		{
+			std::cout << "[ABYSSAL ECLIPSE] Aethelgard survives!\n";
+			for (int c = 0; c < 10; c++)
+			{
+				realms[c]->applyCasualties(0.4f);
+			}
+		}
+		else
+		{
+			std::cout << "[ABYSSAL ECLIPSE] Aethelgard falls!\n";
+			exit(0);
+		}
+	}
+}
+
 
 void Aethelgard::startWarCaller()
 {

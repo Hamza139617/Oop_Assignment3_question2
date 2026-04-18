@@ -139,7 +139,7 @@ public:
 	void addWarrior(WarriorLord* w);
 	void addAssassin(Assassin* a);
 
-
+	void applyCasualties(float  value);
 	void performAction(); // for collecting the tax and aging the subjects
 
 };
@@ -289,7 +289,8 @@ private:
 public:
 
 	TheVoidRift(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain);
-
+	int getThreatLevel()const;
+	void incrementThreat();
 };
 
 class Aethelgard {
@@ -299,7 +300,7 @@ private:
 	Kingdom** realms;
 	int realmsMax;
 	
-
+	TheVoidRift* voidRift;
 	int** Relations;
 
 	LandedLord** Lord;
@@ -342,7 +343,7 @@ public:
 	void oneHour(int& attackerC, int& attackerK, int& attackerF,int&attackerS, int& defenderC, int& defenderK, int& defenderF,int&defenderS, int atkCHp, int atkKHp, int atkFHp, int defCHp, int defKHp, int defFHp, Kingdom& attacker, Kingdom& defender, int atkStrat, int defStrat);
 	void startWarCaller();
 	void startWar(Kingdom& attacker, Kingdom& defender);
-
+	void phaseVoidRift();
 	// your area mr Usama 
 	
 
