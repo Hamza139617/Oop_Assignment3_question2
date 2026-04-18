@@ -24,7 +24,10 @@ void Aethelgard::economicDispatch() {
 		if (realms[i]->getWealth() < 0) {
 
 			realms[i]->setWealth(0);
-			realms[i]->getFootsoldier()->takeCasualty();
+			for (int j = 0; j < realms[i]->getSoldierCount(); j++) {
+				realms[i]->getFootsoldier()[j]->takeCasualty();
+
+			}
 
 		}
 		else {
@@ -87,7 +90,7 @@ void Aethelgard::shadowTriggers() {
 			
 
 			if (!realms[i]->getCurrentLord()) {
-				realms[i]->setCivilTension(realms[i]->getCivilWar() + 30.0);
+				realms[i]->setCivilWarTension(realms[i]->getCivilWar() + 30.0);
 			}
 
 			if (realms[i]->getWealth() < 0) {
@@ -101,18 +104,18 @@ void Aethelgard::shadowTriggers() {
 			for (int j = 0; j < realms[i]->getLordCount(); j++) {
 
 				if (realms[i]->getLocalLord()[j]->getAmbitionStat() > 50) {
-					realms[i]->setCivilTension((realms[i]->getLocalLord()[j]->getAmbitionStat() / 10.0));
+					realms[i]->setCivilWarTension((realms[i]->getLocalLord()[j]->getAmbitionStat() / 10.0));
 					break;
 				}
 
 			}
 
 			if (realms[i]->getCurrentLord()->getStrategyStat() > 70) {
-				realms[i]->setCivilTension(realms[i]->getCivilWar() - 3.0);
+				realms[i]->setCivilWarTension(realms[i]->getCivilWar() - 3.0);
 			}
 
 			if (realms[i]->getCavalryCount() + realms[i]->getSoldierCount() + realms[i]->getKnightCount() > 200) {
-				realms[i]->setCivilTension(realms[i]->getCivilTension() - 1.0);
+				realms[i]->setCivilWarTension(realms[i]->getCivilWar() - 1.0);
 			}
 
 		}
@@ -137,12 +140,93 @@ void Aethelgard::shadowTriggers() {
 
 				bool checkRelations = false;
 
+				for (int s = 0; s < 8; s++) {
+					
+					if (Relations[i][s] < 0) {
+						l->setPlotProgress(l->getAssassinationPlotProgress() + 2);
+						break;
+					}
+
+				}
+
+				if (realms[i]->getCurrentLord()->getStrategyStat() > 50) l->setPlotProgress(l->getAssassinationPlotProgress() - (realms[i]->getCurrentLord()->getStrategyStat() / 25.0));
+
+				if (realms[i]->getDefenseStat() > 50) l->setPlotProgress(l->getAssassinationPlotProgress() - 1);
+
+
+				if (l->getAssassinationPlotProgress() < 0) l->setPlotProgress(0);
+
+
+
+			}
+
+			if (l->getAssassinationPlotProgress() > 100.0) {
+				
+				int ageModifier = (realms[i]->getCurrentLord()->getAge() < 40 ? +5 : -5);
+
+				int aPower = l->getAmbitionStat() + (realms[i]->getWealth() / 100);
+				int target = realms[i]->getCurrentLord()->getStrategyStat() + (realms[i]->getDefenseStat() / 10) + ageModifier;
+
+				if (aPower > target) {
+					// terminate the lord
+				}
+				else {
+					// terminate the plotter
+				}
+
 			}
 
 		}
 
 
+
+		for (int t = 0; t < assassinMax; t++) {
+			if (realms[i]->getRealmId() == assassin[t]->getClientIdx()) { // check if it is the client of any assassin
+
+				for (int k = 0; k < realms[i]->getLordCount(); k++) { // check if the plot is larger then 100
+
+					LandlessLord* l = realms[i]->getLocalLord()[k];
+
+					if (l->getAssassinationPlotProgress() > 100.0) {
+
+						bool checkCrelations = false;
+						int worstRelations = Relations[i][0];
+						int rival = 0;
+						for (int relat = 0; relat < 9; relat++) {
+
+							if (worstRelations < Relations[i][relat]) {
+								rival = relat;
+								worstRelations = Relations[i][relat];
+							}
+						}
+
+						if (worstRelations <= -50) {
+
+							LandedLord* targetLord = realms[rival]->getCurrentLord();
+
+							if (targetLord) {
+
+								if (targetLord->getStrategyStat() < assassin[t]->getStealthStat()) {
+									// kil target
+								}
+								else {
+									Relations[rival][i] -= 20;
+								}
+
+								// finish the assassin
+							}
+
+						}
+
+					}
+
+				}
+
+			}
+		}
+
 	}
+
 
 }
 

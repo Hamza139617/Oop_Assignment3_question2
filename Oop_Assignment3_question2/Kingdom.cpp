@@ -293,10 +293,10 @@ Aethelgard::Aethelgard(const char* filename) {
 	for (int i = 0; i < realmsMax; i++)
 		realms[i] = nullptr;
 
-	ifstream file(filename);
+	std::ifstream file(filename);
 
 	if (!file) {
-		cout << "File not found\n";
+		std::cout << "File not found\n";
 		return;
 	}
 
@@ -451,8 +451,9 @@ Aethelgard::Aethelgard(const char* filename) {
 			}
 			else if (strEqual(clas, "WarriorLord")) {
 
-				// work on the clamp part latter
-				warriorLord[warriorCurrent] = new WarriorLord(lordId, name, age, rId, aStat, dstat, fId, sStat, true);
+				// work on the clamp part latter 
+				// also added the count over here usama
+				warriorLord[warriorCurrent] = new WarriorLord(2,lordId, name, age, rId, aStat, dstat, fId, sStat, true);
 				
 				realms[rId]->addWarrior(warriorLord[warriorCurrent]);
 

@@ -20,6 +20,7 @@ public:
 	bool isAlive;
 	Person(int id, const char* name, int age);
 	int getAge()const { return age; }
+	void setAge(int x) { age = x; }
 };
 
 class Asset :public Entity
@@ -58,6 +59,10 @@ class FootSoldier :public MeleeUnit
 {
 public:
 	FootSoldier(int count,int id, const char* n, int hp, int ar, float mC, int aP);
+
+	void takeCasualty() {
+		int loss = soldierCount * 0.05;
+	}
 };
 
 class Knight :public MeleeUnit
@@ -152,6 +157,7 @@ protected:
 public:
 	LandedLord(int id, const char* name, int age, int reIdx, int amStat, int dipStat, int faId, int stratStat);
 	int getStrategyStat()const { return strategyStat; }
+	
 };
 
 class LandlessLord :public Noble
@@ -163,6 +169,9 @@ public:
 	float getAssassinationPlotProgress()const {
 		return assassinationPlotProgress;
 	}
+
+	void setPlotProgress(float t) { assassinationPlotProgress = t; }
+
 };
 
 class Sage :public Person
@@ -192,7 +201,7 @@ class WarriorLord :public Noble, public Knight
 protected:
 	int strategyStat;
 public:
-	WarriorLord(int id, const char* name, int age, int realmIndx, int ambS, int dipS, int faId, int stratStat, bool shieldB);
+	WarriorLord(int count ,int id, const char* name, int age, int realmIndx, int ambS, int dipS, int faId, int stratStat, bool shieldB);
 	int getStrategyStat()const { return strategyStat; }
 };
 

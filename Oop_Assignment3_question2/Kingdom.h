@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <fstream>
-using namespace std;
+
 // Forward Declarations
 
 class LandedLord;
@@ -27,6 +27,7 @@ protected:
 	int baseTaxIncome;
 	const char* name;
 	const char* terrain;
+	float civilWarTension = 0;
 
 	LandedLord* currentLord;
 	int* heirIds;
@@ -71,6 +72,45 @@ private:
 
 public:
 
+	float getCivilWar() { return civilWarTension; }
+	void setCivilWarTension(float w) { civilWarTension = w; }
+
+	const char* getKingdomName() { return name; }
+
+	int getBaseTaxIncome() { return baseTaxIncome; }
+
+	int SUM() {
+
+		int sum = 0;
+
+		for (int i = 0; i < soldierCount; i++) {
+			sum += soldier[i]->getMaintenanceCost();
+		}
+
+		for (int i = 0; i < knightCount; i++) {
+			sum += knight[i]->getMaintenanceCost();
+		}
+
+		for (int i = 0; i < cavalryCount; i++) {
+			sum += cavalry[i]->getMaintenanceCost();
+		}
+
+		for (int i = 0; i < warriorLordCount; i++) {
+			sum += warriorLord[i]->getMaintenanceCost();
+		}
+
+		for (int i = 0; i < catapultCount; i++) {
+			sum += catapult[i]->getMaintenanceCost();
+		}
+
+		for (int i = 0; i < bRamCount; i++) {
+			sum += bRam[i]->getMaintenanceCost();
+		}
+
+		return sum;
+
+	}
+
 	int& getLordCount() {
 		return lordCount;
 	}
@@ -86,6 +126,9 @@ public:
 	int& getCavalryCount() {
 		return cavalryCount;
 	}
+
+	int getDefenseStat() { return defenseStat; }
+
 	int getWealth()const;
 	int& getBramCount() { return bRamCount; }
 	int& getCatapultCount() { return catapultCount; }

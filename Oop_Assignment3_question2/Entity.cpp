@@ -106,7 +106,7 @@ Assassin::Assassin(int id, const char* name, int age, int stealthS, int clientIn
 	clientIdx = clientIndx;
 }
 
-WarriorLord::WarriorLord(int id, const char* name, int age, int realmIndx, int ambS, int dipS, int faId, int stratStat, bool shieldB) :Noble(id, name, age, realmIndx, ambS, dipS, faId), Knight(id, name, 100, 0, 0.0f, 60, shieldB)
+WarriorLord::WarriorLord(int count , int id, const char* name, int age, int realmIndx, int ambS, int dipS, int faId, int stratStat, bool shieldB) :Noble(id, name, age, realmIndx, ambS, dipS, faId), Knight(count,id, name, 100, 0, 0.0f, 60, shieldB)
 {
 	strategyStat = stratStat;
 }
