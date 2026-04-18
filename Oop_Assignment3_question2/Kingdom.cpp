@@ -164,6 +164,16 @@ void Kingdom::addFootSoldier(FootSoldier* f) {
 
 }
 
+void Kingdom::addAssassin(Assassin* a) {
+
+	if (!assassin) return;
+
+	this->assassin = a;
+
+	return;
+
+}
+
 void Kingdom::addSage(Sage* s) {
 	if (sageCount < sageMax) {
 		sage[sageCount++] = s;
@@ -212,6 +222,8 @@ Aethelgard::Aethelgard(const char* filename) {
 	knightMax = 9;
 	cavalryMax = 9;
 	sageMax = 9;
+	assassinMax = 9;
+	
 
 	int sageCurrent = 0;
 	int soldierCurrent = 0;
@@ -221,6 +233,7 @@ Aethelgard::Aethelgard(const char* filename) {
 	int landedLordCurrent = 0;
 	int lordCurrent = 0;
 	int warriorCurrent = 0;
+	int assassinCurrent = 0;
 
 	Lord = new LandedLord * [landedLordMax];
 	localCourtiers = new LandlessLord * [lordMax];
@@ -495,6 +508,9 @@ Aethelgard::Aethelgard(const char* filename) {
 			int healP = strToInt(getToken(line, i));
 			int wisd = strToInt(getToken(line, i));
 
+			sage[sageCurrent] = new Sage(sageCurrent, name, 20, healP, wisd);
+
+			realms[rId]->addSage(sage[sageCurrent++]);
 
 		}
 		else if (section == 6) {
@@ -513,6 +529,10 @@ Aethelgard::Aethelgard(const char* filename) {
 
 			int sStat = strToInt(getToken(line, i));
 			int cRealm = strToInt(getToken(line, i));
+
+			assassin[assassinCurrent] = new Assassin(assassinCurrent, name, age, sStat, cRealm);
+
+			realms[cRealm]->addAssassin(assassin[assassinCurrent]);
 		}
 		else if (section == 7) {
 			// config section

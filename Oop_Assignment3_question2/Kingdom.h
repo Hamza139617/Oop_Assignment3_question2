@@ -14,6 +14,7 @@ class Catapult;
 class Warship;
 class WarriorLord;
 class Sage;
+class Assassin;
 
 
 
@@ -40,6 +41,8 @@ protected:
 	Catapult** catapult;
 	Warship** warship;
 	WarriorLord** warriorLord;
+	Assassin* assassin;
+
 
 	Sage** sage;
 
@@ -128,7 +131,7 @@ public:
 	void addSage(Sage* s);
 	void addCavalry(Cavalry* c);
 	void addWarrior(WarriorLord* w);
-
+	void addAssassin(Assassin* a);
 
 	void performAction(); // for collecting the tax and aging the subjects
 
@@ -305,6 +308,7 @@ private:
 	WarriorLord** warriorLord;
 
 	Sage** sage;
+	Assassin** assassin;
 
 	int landedLordMax;
 	int lordMax;
@@ -316,6 +320,7 @@ private:
 	int shipMax;
 	int warriorMax;
 	int sageMax;
+	int assassinMax;
 
 
 public:
