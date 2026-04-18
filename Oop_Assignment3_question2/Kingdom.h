@@ -128,12 +128,16 @@ public:
 	WarShip**& getShip();
 	void addLord(LandedLord* l);
 
+	void setWealth(int w);
+	void updateCounts(int c, int k, int f, int s);
+
 	void addlocalLord(LandlessLord* l);
 	void addKnight(Knight* k);
 	void addFootSoldier(FootSoldier* f);
 	void addSage(Sage* s);
 	void addCavalry(Cavalry* c);
 	void addWarrior(WarriorLord* w);
+	void addAssassin(Assassin* a);
 
 
 	void performAction(); // for collecting the tax and aging the subjects
