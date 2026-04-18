@@ -343,6 +343,62 @@ public:
 	void startWarCaller();
 	void startWar(Kingdom& attacker, Kingdom& defender);
 
+	// your area mr Usama 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// hamza area
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	
 };
