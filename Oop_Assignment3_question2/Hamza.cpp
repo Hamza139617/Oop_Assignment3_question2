@@ -74,3 +74,77 @@ void Aethelgard::geopolitcialDecay() {
 }
 
 
+
+
+void Aethelgard::shadowTriggers() {
+
+	// tensionsAccumulator
+
+	for (int i = 0; i < realmsMax - 1; i++) {
+
+		if (realms[i]->getCivilWar() < 100.0) {
+
+			
+
+			if (!realms[i]->getCurrentLord()) {
+				realms[i]->setCivilTension(realms[i]->getCivilWar() + 30.0);
+			}
+
+			if (realms[i]->getWealth() < 0) {
+				realms[i]->setCivilWarTension(realms[i]->getCivilWar() + 5.0);
+			}
+
+			// if a specific landless lord in the realm is having high ambitions then
+			// then increase the civil war tension for any of them
+			// having ambitions larger than 50 and break;
+
+			for (int j = 0; j < realms[i]->getLordCount(); j++) {
+
+				if (realms[i]->getLocalLord()[j]->getAmbitionStat() > 50) {
+					realms[i]->setCivilTension((realms[i]->getLocalLord()[j]->getAmbitionStat() / 10.0));
+					break;
+				}
+
+			}
+
+			if (realms[i]->getCurrentLord()->getStrategyStat() > 70) {
+				realms[i]->setCivilTension(realms[i]->getCivilWar() - 3.0);
+			}
+
+			if (realms[i]->getCavalryCount() + realms[i]->getSoldierCount() + realms[i]->getKnightCount() > 200) {
+				realms[i]->setCivilTension(realms[i]->getCivilTension() - 1.0);
+			}
+
+		}
+		else {
+
+			// if the tension in the country is more than the threshold then the rebellion is going to occur 
+
+
+
+		}
+		
+
+		// assassination mechanics (the internal coupt )
+
+		for (int j = 0; j < realms[i]->getLordCount(); j++) {
+
+			LandlessLord* l = realms[i]->getLocalLord()[j];
+
+			if (l->getAmbitionStat() > 60.0) {
+
+				l->setPlotProgress(l->getAmbitionStat() + (l->getAmbitionStat() - 60) / 5.0);
+
+				bool checkRelations = false;
+
+			}
+
+		}
+
+
+	}
+
+}
+
+
+
