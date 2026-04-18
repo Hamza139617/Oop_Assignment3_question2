@@ -379,7 +379,7 @@ public:
 	void  economicDispatch();
 	void aggingMortalityUpdates();
 	void geopolitcialDecay();
-
+	void shadowTriggers();
 
 
 

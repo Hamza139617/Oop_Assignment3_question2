@@ -55,4 +55,22 @@ void Aethelgard::aggingMortalityUpdates() {
 
 }
 
+void Aethelgard::geopolitcialDecay() {
+
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 10; j++) {
+			
+			if (i != j) {
+				
+				if (Relations[i][j] > -100) {
+					Relations[i][j] -= 1;
+				}
+
+			}
+
+		}
+	}
+
+}
+
 
