@@ -83,12 +83,13 @@ public:
 	int& getCavalryCount() {
 		return cavalryCount;
 	}
-
+	int getWealth()const;
 	int& getBramCount() { return bRamCount; }
 	int& getCatapultCount() { return catapultCount; }
 	int& getShipCount() { return shipCount; }
 	int& getWarriorLordCount() { return warriorLordCount; }
 	int& getSageCount() { return sageCount; }
+	int getRealmId()const;
 
 	Kingdom(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain);
 
@@ -119,7 +120,9 @@ public:
 	Sage**& getSage() {
 		return sage;
 	}
-
+	BatteringRam**& getBram();
+	Catapult**& getCatapult();
+	WarShip**& getShip();
 	void addLord(LandedLord* l);
 
 	void addlocalLord(LandlessLord* l);
@@ -128,8 +131,8 @@ public:
 	void addSage(Sage* s);
 	void addCavalry(Cavalry* c);
 	void addWarrior(WarriorLord* w);
-
-
+	void updateCounts(int c, int k, int f, int s);
+	void setWealth(int w);
 	void performAction(); // for collecting the tax and aging the subjects
 
 };
@@ -320,7 +323,18 @@ private:
 
 public:
 	Aethelgard(const char* filename);
+	float totalDamage(int attack, int strat);
+	float applyDamage(float damage, int& unitNum, int unitHp);
+	void sageHeal(Kingdom& kingdom, float inFootDmg, int& footNum);
+	float siegeDmg(Kingdom& kingdom);
+	float cavDmg(Kingdom& kingdom, int snapCount);
+	float kntDmg(Kingdom& kingdom, int snapKnight, int snapWarriorLord);
+	float footDmg(int snapCount, int footAttackPower);
+	void oneHour(int& attackerC, int& attackerK, int& attackerF,int&attackerS, int& defenderC, int& defenderK, int& defenderF,int&defenderS, int atkCHp, int atkKHp, int atkFHp, int defCHp, int defKHp, int defFHp, Kingdom& attacker, Kingdom& defender, int atkStrat, int defStrat);
+	void startWarCaller();
+	void startWar(Kingdom& attacker, Kingdom& defender);
 
 
+	
 };
 

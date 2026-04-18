@@ -1,6 +1,6 @@
 #include "Kingdom.h"
 #include "Entity.h"
-
+#include<iostream>
 // helper functions
 
 int strLength(const char* s) {
@@ -69,8 +69,16 @@ char* getToken(char* line, int& index) {
 	if (line[index] == ',') index++;
 	return token;
 }
+void Kingdom::setWealth(int w)
+{
+	wealth = w;
+}
+BatteringRam**& Kingdom::getBram()
+{
+	return bRam;
+}
 
-
+int Kingdom::getWealth()const { return wealth; }
 Kingdom::Kingdom(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain): name(nameOne), terrain(terrain) {
 
 	this->realmId = realmId;
@@ -524,4 +532,312 @@ Aethelgard::Aethelgard(const char* filename) {
 
 	file.close();
 
+}
+float Aethelgard::totalDamage(int attack, int strategy)
+{
+	return attack * (1 + strategy / 100.0f);
+}
+
+float Aethelgard::applyDamage(float damage, int& unitNum, int unitHp)
+{
+	float remainingD = damage;
+
+	while (unitNum > 0 && remainingD > 0)
+	{
+		if (unitHp <= remainingD)
+		{
+			remainingD -= unitHp;
+			unitNum--;
+		}
+		else
+		{
+			remainingD = 0;
+		}
+	}
+	return remainingD;
+}
+
+void Aethelgard::sageHeal(Kingdom& kingdom, float inFootDmg, int& footNum)
+{
+	int total = 0;
+	for (int i = 0; i < kingdom.getSageCount(); i++)
+	{
+		total += kingdom.getSage()[i]->getHealingPower();
+	}
+	int maxRes = (int)(inFootDmg * 0.01f);
+	int res = (total < maxRes) ? total : maxRes;
+	footNum += res;
+}
+Catapult**& Kingdom::getCatapult() { return catapult; }
+WarShip**& Kingdom::getShip() { return warship; }
+
+float Aethelgard::siegeDmg(Kingdom& kingdom)
+{
+	float total = 0;
+	BatteringRam** ram = kingdom.getBram();
+	Catapult** catapult = kingdom.getCatapult();
+	WarShip** ship = kingdom.getShip();
+	for (int i = 0; i < kingdom.getBramCount(); i++)
+	{
+		total += ram[i]->getSiegeDamage();
+	}
+
+	for (int i = 0; i < kingdom.getCatapultCount(); i++)
+	{
+		total += catapult[i]->getSiegeDamage();
+	}
+	for (int i = 0; i < kingdom.getShipCount(); i++)
+	{
+		total += ship[i]->getSiegeDamage();
+	}
+	return  total;
+}
+float Aethelgard::cavDmg(Kingdom& kingdom, int snapCount)
+{
+	float total = 0;
+	Cavalry** cav = kingdom.getCavalry();
+	for (int i = 0; i < snapCount; i++)
+	{
+		total += cav[i]->getAttackPower() * cav[i]->getChargeMultiplier();
+	}
+	return total;
+}
+
+float Aethelgard::kntDmg(Kingdom& kingdom, int snapKnight, int snapWarriorLord)
+{
+	float total = 0;
+	Knight** knt = kingdom.getKnight();
+	for (int i = 0; i < snapKnight; i++)
+	{
+		total += knt[i]->getAttackPower();
+	}
+	WarriorLord** wl = kingdom.getWarrior();
+	for (int i = 0; i < snapWarriorLord; i++)
+	{
+		total += wl[i]->Knight::getAttackPower();
+	}
+	return total;
+
+}
+
+float Aethelgard::footDmg(int snapCount, int footAttackPower)
+{
+	return snapCount * footAttackPower;
+}
+
+void Aethelgard::oneHour(int& attackerC, int& attackerK, int& attackerF, int& attackerS, int& defenderC, int& defenderK, int& defenderF, int& defenderS, int atkCHp, int atkKHp, int atkFHp, int defCHp, int defKHp, int defFHp, Kingdom& attacker, Kingdom& defender, int atkStrat, int defStrat)
+{
+	int saveAttackerC = attackerC;
+	int saveAttackerK = attackerK;
+	int saveAttackerF = attackerF;
+	int saveAttackerS = attackerS;
+	int saveAttackerWL = attacker.getWarriorLordCount();
+
+	int saveDefenderC = defenderC;
+	int saveDefenderK = defenderK;
+	int saveDefenderF = defenderF;
+	int saveDefenderS = defenderS;
+	int saveDefenderWL = defender.getWarriorLordCount();
+
+
+	float attackDamageS = siegeDmg(attacker);
+	float attackDamageC = cavDmg(attacker, saveAttackerC);
+	float attackDamageK = kntDmg(attacker, saveAttackerK, saveAttackerWL);
+	float attackDamageF = footDmg(saveAttackerF, 10);
+
+	float defendDamageS = siegeDmg(defender);
+	float defendDamageC = cavDmg(defender, saveDefenderC);
+	float defendDamageK = kntDmg(defender, saveDefenderK, saveDefenderWL);
+	float defendDamageF = footDmg(saveDefenderF, 10);
+
+	float atkStratDmgS = totalDamage(attackDamageS, atkStrat);
+	float atkStratDmgC = totalDamage(attackDamageC, atkStrat);
+	float atkStratDmgK = totalDamage(attackDamageK, atkStrat);
+	float atkStratDmgF = totalDamage(attackDamageF, atkStrat);
+
+	float defStratDmgS = totalDamage(defendDamageS, defStrat);
+	float defStratDmgC = totalDamage(defendDamageC, defStrat);
+	float defStratDmgK = totalDamage(defendDamageK, defStrat);
+	float defStratDmgF = totalDamage(defendDamageF, defStrat);
+
+	float atkCavDmg = atkStratDmgC + atkStratDmgS;
+	float defCavDmg = defStratDmgC + defStratDmgS;
+
+	float atkCavSpill = applyDamage(atkCavDmg, defenderC, defCHp);
+	float defCavSpill = applyDamage(defCavDmg, attackerC, atkCHp);
+
+	float atkKntDmg = atkStratDmgK + atkCavSpill;
+	float defKntDmg = defStratDmgK + defCavSpill;
+
+	float atkKntSpill = applyDamage(atkKntDmg, defenderK, defKHp);
+	float defKntSpill = applyDamage(defKntDmg, attackerK, atkKHp);
+
+	float atkFootDmg = atkKntSpill + atkStratDmgF;
+	float defFootDmg = defStratDmgF + defKntSpill;
+
+	float atkIncomingFoot = defFootDmg;
+	float defIncomingFoot = atkFootDmg;
+
+	applyDamage(atkFootDmg, defenderF, defFHp);
+	applyDamage(defFootDmg, attackerF, atkFHp);
+
+	int atkShipLoss = saveAttackerS > 0 ? ((int)(saveAttackerS *0.1) > 1 ? (int)(saveAttackerS *0.1) : 1) : 0;
+	int defShipLoss = saveDefenderS > 0 ? ((int)(saveDefenderS *0.1) > 1 ? (int)(saveDefenderS *0.1) : 1) : 0;
+
+	attackerS -= atkShipLoss;
+	defenderS -= defShipLoss;
+
+	sageHeal(attacker, atkIncomingFoot, attackerF);
+	sageHeal(defender, defIncomingFoot, defenderF);
+
+
+
+}
+void Kingdom::updateCounts(int c, int k, int f, int s)
+{
+	cavalryCount = c;
+	knightCount = k;
+	soldierCount = f;
+	shipCount = s;
+}
+int Kingdom::getRealmId()const { return realmId; }
+void Aethelgard::startWar(Kingdom& attacker, Kingdom& defender)
+{
+	int numAtkC = attacker.getCavalryCount();
+	int numAtkK = attacker.getKnightCount();
+	int numAtkF = attacker.getSoldierCount();
+	int numAtkWL = attacker.getWarriorLordCount();
+	int numAtkR = attacker.getBramCount();
+	int numAtkS = attacker.getShipCount();
+
+	int numDefC = defender.getCavalryCount();
+	int numDefK = defender.getKnightCount();
+	int numDefF = defender.getSoldierCount();
+	int numDefWL = defender.getWarriorLordCount();
+	int numDefR = defender.getBramCount();
+	int numDefS = defender.getShipCount();
+
+	int atkCHp = (numAtkC > 0) ? attacker.getCavalry()[0]->getHp() : 0;
+	int atkKHp = (numAtkK > 0) ? attacker.getKnight()[0]->getHp() : 0;
+	int atkFHp = (numAtkF > 0) ? attacker.getFootsoldier()[0]->getHp() : 0;
+
+	int defCHp = (numDefC > 0) ? defender.getCavalry()[0]->getHp() : 0;
+	int defKHp = (numDefK > 0) ? defender.getKnight()[0]->getHp() : 0;
+	int defFHp = (numDefF > 0) ? defender.getFootsoldier()[0]->getHp() : 0;
+
+	int atkStrat = (attacker.getWarrior() != nullptr) ? attacker.getWarrior()->getStrategyStat() : 0;
+	int defStrat = (defender.getWarrior() != nullptr) ? defender.getWarrior()->getStrategyStat() : 0;
+
+	bool end = false;
+
+	for (int i = 1; i <= 24; i++)
+	{
+		oneHour(numAtkC, numAtkK, numAtkF, numAtkS, numDefC, numDefK, numDefF, numDefS, atkCHp, atkKHp, atkFHp, defCHp, defKHp, defFHp, attacker, defender, atkStrat, defStrat);
+		int atkPower = numAtkF * 1 + numAtkC * 5 + numAtkK * 8 + numAtkWL * 10 + numAtkR * 25 + numAtkS * 12;
+		int defPower = numDefF * 1 + numDefC * 5 + numDefK * 8 + numDefWL * 10 + numDefR * 25 + numDefS * 12;
+
+		if (atkPower < defPower * 0.5f)
+		{
+			std::cout << ">>>ROUTED<<<\n";
+			Relations[attacker.getRealmId()][defender.getRealmId()] = 0;
+			Relations[defender.getRealmId()][attacker.getRealmId()] = 0;
+			for (int k = 0; k < 10; k++)
+			{
+				if (k != attacker.getRealmId() && k != defender.getRealmId())
+				{
+					Relations[k][attacker.getRealmId()] -= 2;
+				}
+			}
+			end = true;
+
+			attacker.setWealth(attacker.getWealth() * 0.25f);
+			break;
+		}
+		else if (defPower < atkPower * 0.5f)
+		{
+			std::cout << ">>>CONQUERED<<<" << std::endl;
+
+			Relations[attacker.getRealmId()][defender.getRealmId()] = 0;
+			Relations[defender.getRealmId()][attacker.getRealmId()] = -50;
+			for (int k = 0; k < 10; k++)
+			{
+				if (k != attacker.getRealmId() && k != defender.getRealmId())
+				{
+					Relations[k][attacker.getRealmId()] -= 2;
+				}
+			}
+			defender.setWealth(defender.getWealth() * 0.25f);
+			end = true;
+			break;
+		}
+
+
+	}
+	if (!end)
+	{
+		std::cout << ">>>STALEMATE<<<" << std::endl;
+
+		Relations[attacker.getRealmId()][defender.getRealmId()] = 0;
+		Relations[defender.getRealmId()][attacker.getRealmId()] = 0;
+
+		for (int k = 0; k < 10; k++)
+		{
+			if (k != attacker.getRealmId() && k != defender.getRealmId())
+			{
+				Relations[k][attacker.getRealmId()] -= 2;
+			}
+		}
+	}
+
+	attacker.updateCounts(numAtkC, numAtkK, numAtkF,numAtkS);
+	defender.updateCounts(numDefC, numDefK, numDefF,numDefS);
+}
+
+void Aethelgard::startWarCaller()
+{
+	Kingdom* attacker = nullptr;
+	Kingdom* defender = nullptr;
+	for (int i = 0; i < 10; i++)
+	{
+		for (int j = 0; j < 10; j++)
+		{
+			if (Relations[i][j] <= -80)
+			{
+				if (realms[i]->getCurrentLord()->getAmbitionStat() > realms[j]->getCurrentLord()->getAmbitionStat())
+				{
+					attacker = realms[i];
+					defender = realms[j];
+				}
+				else if (realms[i]->getCurrentLord()->getAmbitionStat() < realms[j]->getCurrentLord()->getAmbitionStat())
+				{
+					attacker = realms[j];
+					defender = realms[i];
+				}
+				else
+				{
+					if (i < j)
+					{
+						attacker = realms[i];
+						defender = realms[j];
+					}
+					else
+					{
+						attacker = realms[j];
+						defender = realms[i];
+					}
+				}
+				int atkPower = attacker->getSoldierCount() * 1 + attacker->getCavalryCount() * 5 + attacker->getKnightCount() * 8 + attacker->getWarriorLordCount() * 10 + attacker->getBramCount() * 25 + attacker->getShipCount() * 12;
+				if (atkPower == 0)
+				{
+
+					Relations[i][j] = 0;
+					Relations[j][i] = 0;
+				}
+				else
+				{
+					startWar(*attacker, *defender);
+				}
+			}
+		}
+	}
 }
