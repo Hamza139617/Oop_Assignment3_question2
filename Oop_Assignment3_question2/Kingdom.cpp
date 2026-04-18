@@ -263,6 +263,19 @@ TheImperialSeat::TheImperialSeat(int realmId, int wealth, int defenseStat, int b
 
 TheVoidRift::TheVoidRift(int realmId, int wealth, int defenseStat, int baseTaxInocome, const char* nameOne, const char* terrain): Kingdom(realmId, wealth, defenseStat, baseTaxInocome, nameOne, terrain) {}
 
+void Kingdom::KillLandedLord() {
+
+	delete this->currentLord;
+
+	
+
+	for (int i = 0; i < lordCount; i++) {
+		
+	}
+
+}
+
+
 Aethelgard::Aethelgard(const char* filename) {
 
 	realmsMax = 10;

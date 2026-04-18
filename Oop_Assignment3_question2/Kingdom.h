@@ -77,6 +77,8 @@ public:
 	void setCivilWarTension(float w) { civilWarTension = w; }
 	int getTotalMilitaryPower()const;
 
+	void KillLandedLord();
+
 	const char* getKingdomName() { return name; }
 
 	int getBaseTaxIncome() { return baseTaxIncome; }

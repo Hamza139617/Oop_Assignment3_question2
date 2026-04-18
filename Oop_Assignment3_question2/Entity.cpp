@@ -89,6 +89,8 @@ LandedLord::LandedLord(int id, const char* name, int age, int reIdx, int amStat,
 	this->strategyStat = stratStat;
 }
 
+
+
 LandlessLord::LandlessLord(int id, const char* name, int age, int realmIndx, int ambS, int dipS, int faId) :Noble(id, name, age, realmIndx, ambS, dipS, faId)
 {
 	assassinationPlotProgress = 0.0f;

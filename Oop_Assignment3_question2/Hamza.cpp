@@ -53,7 +53,7 @@ void Aethelgard::aggingMortalityUpdates() {
 
 		if (l->getAge() > 70) l->setHealthMeter(l->getHealthMeter() + 30.0);
 
-		if (l->getAge() >= 100.0) l->kill();
+		if (l->getAge() >= 100.0) realms[i]->killLandedLord();
 
 		l->setAge(l->getAge() + 1);
 
