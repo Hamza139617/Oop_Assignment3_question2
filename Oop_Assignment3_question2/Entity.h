@@ -158,6 +158,7 @@ protected:
 	int strategyStat;
 public:
 	LandedLord(int id, const char* name, int age, int reIdx, int amStat, int dipStat, int faId, int stratStat);
+
 	int getStrategyStat()const { return strategyStat; }
 	
 };
