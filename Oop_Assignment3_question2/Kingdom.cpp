@@ -119,7 +119,7 @@ Kingdom::Kingdom(int realmId, int wealth, int defenseStat, int baseTaxInocome, c
 	Cavalry** cavalry = nullptr;
 	BatteringRam** bRam = nullptr;
 	Catapult** catapult = nullptr;
-	Warship** warship = nullptr;
+	WarShip** warship = nullptr;
 	WarriorLord** warriorLord = nullptr;
 
 	Sage** sage = nullptr;
@@ -745,8 +745,8 @@ void Aethelgard::startWar(Kingdom& attacker, Kingdom& defender)
 	int defKHp = (numDefK > 0) ? defender.getKnight()[0]->getHp() : 0;
 	int defFHp = (numDefF > 0) ? defender.getFootsoldier()[0]->getHp() : 0;
 
-	int atkStrat = (attacker.getWarrior() != nullptr) ? attacker.getWarrior()->getStrategyStat() : 0;
-	int defStrat = (defender.getWarrior() != nullptr) ? defender.getWarrior()->getStrategyStat() : 0;
+	int atkStrat = (attacker.getCurrentLord() != nullptr) ? attacker.getCurrentLord()->getStrategyStat() : 0;
+	int defStrat = (defender.getCurrentLord() != nullptr) ? defender.getCurrentLord()->getStrategyStat() : 0;
 
 	bool end = false;
 

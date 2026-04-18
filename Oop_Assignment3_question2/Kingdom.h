@@ -11,7 +11,7 @@ class Knight;
 class Cavalry;
 class BatteringRam;
 class Catapult;
-class Warship;
+class WarShip;
 class WarriorLord;
 class Sage;
 class Assassin;
@@ -39,7 +39,7 @@ protected:
 	Cavalry** cavalry;
 	BatteringRam** bRam;
 	Catapult** catapult;
-	Warship** warship;
+	WarShip** warship;
 	WarriorLord** warriorLord;
 	Assassin* assassin;
 
@@ -311,7 +311,7 @@ private:
 	Cavalry** cavalry;
 	BatteringRam** bRam;
 	Catapult** catapult;
-	Warship** warship;
+	WarShip** warship;
 	WarriorLord** warriorLord;
 
 	Sage** sage;
@@ -344,7 +344,7 @@ public:
 	void startWar(Kingdom& attacker, Kingdom& defender);
 
 	// your area mr Usama 
-
+	
 
 
 
